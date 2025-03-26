@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor - Player Container</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .file-list { float: left; width: 20%; padding: 10px; }
+        .editor { float: left; width: 75%; }
+        textarea { width: 100%; height: 400px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Editor - Player Container</h1>
+    <div class="file-list">
+        <h3>Bestanden</h3>
+        <ul>
+            {% for file in files %}
+                <li><a href="/editor?file={{ file }}">{{ file }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="editor">
+        <h3>Editing: {{ selected_file }}</h3>
+        <form method="POST">
+            <input type="hidden" name="file" value="{{ selected_file }}">
+            <textarea name="code">{{ code }}</textarea><br>
+            <input type="submit" value="Opslaan">
+        </form>
+    </div>
+</body>
+</html>

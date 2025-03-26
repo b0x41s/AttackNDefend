@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cyber Attack & Defend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e1e1e;
+            margin: 20px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1500px;
+            justify-content: space-between;
+        }
+        .side {
+            width: 30%;
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .center {
+            width: 90%;
+            text-align: center;
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #00ff00;
+            text-align: center;
+        }
+        h2 {
+            color: #00cc00;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .running { background: #00ff00; }
+        .stopped { background: #ff0000; }
+        .controls button {
+            margin: 5px;
+            padding: 5px 10px;
+            background: #00ff00;
+            border: none;
+            color: #000;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .controls button:hover {
+            background: #00cc00;
+        }
+        .output {
+            background: #000;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .links a {
+            color: #00ff00;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .submit-form {
+            margin-top: 10px;
+        }
+        .submit-form input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Spelerkant -->
+        <div class="side">
+            <h2>Speler</h2>
+            <div class="status">
+                <div id="player-status" class="status-dot stopped"></div>
+                <span id="player-status-text">Gestopt</span>
+            </div>
+            <p>SSH: <code>ssh root@localhost -p 2222</code></p>
+            <p>Gebruikersnaam: root</p>
+            <p>Wachtwoord: secret</p>
+            <p>Website: <a href="http://localhost:5001" target="_blank">http://localhost:5001</a></p>
+            <p>Editor: <a href="http://192.168.1.20:5000/editor" target="_blank">Editor</a></p>
+            <div class="controls">
+                <button onclick="startContainer('player')">Start</button>
+                <button onclick="stopContainer('player')">Stop</button>
+                <button onclick="rebuildContainer('player')">Rebuild</button>
+            </div>
+            <div class="output" id="player-output"></div>
+        </div>
+
+        <!-- Midden: Scores en Game-info -->
+        <div class="center">
+            <h1>Cyber Attack & Defend</h1>
+            <h3>Scores</h3>
+            <p>Speler: <span id="player-score">0</span></p>
+            <p>AI: <span id="ai-score">0</span></p>
+            <div class="controls">
+                <button onclick="startGame()">Start Spel</button>
+                <button onclick="stopGame()">Stop Spel</button>
+            </div>
+            <div class="submit-form">
+                <input type="text" id="flag-input" placeholder="Voer flag in">
+                <select id="target-select">
+                    <option value="ai">AI</option>
+                    <option value="player">Speler</option>
+                </select>
+                <button onclick="submitFlag()">Submit Flag</button>
+            </div>
+            <div class="output" id="game-output"></div>
+        </div>
+
+        <!-- AI-kant -->
+        <div class="side">
+            <h2>AI</h2>
+            <div class="status">
+                <div id="ai-status" class="status-dot stopped"></div>
+                <span id="ai-status-text">Gestopt</span>
+            </div>
+            <p>SSH: <code>ssh root@localhost -p 2223</code></p>
+            <p>Gebruikersnaam: root</p>
+            <p>Wachtwoord: secret</p>
+            <p>Website: <a href="http://localhost:5002" target="_blank">http://localhost:5002</a></p>
+            <p>Editor: <a href="http://192.168.1.20:5000/editor" target="_blank">Editor</a></p>
+            <div class="controls">
+                <button onclick="startContainer('ai')">Start</button>
+                <button onclick="stopContainer('ai')">Stop</button>
+                <button onclick="rebuildContainer('ai')">Rebuild</button>
+            </div>
+            <div class="output" id="ai-output"></div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io('http://192.168.1.20:5000'); // Gebruik je IP
+        const gameOutput = document.getElementById('game-output');
+        const playerOutput = document.getElementById('player-output');
+        const aiOutput = document.getElementById('ai-output');
+
+        socket.on('connect', () => {
+            addOutput(gameOutput, 'Verbonden met de server');
+        });
+
+        socket.on('game_output', (data) => {
+            addOutput(gameOutput, data.data);
+        });
+
+        socket.on('player_output', (data) => {
+            addOutput(playerOutput, data.data);
+        });
+
+        socket.on('ai_output', (data) => {
+            addOutput(aiOutput, data.data);
+        });
+
+        socket.on('status', (data) => {
+            const playerStatus = document.getElementById('player-status');
+            const playerText = document.getElementById('player-status-text');
+            const aiStatus = document.getElementById('ai-status');
+            const aiText = document.getElementById('ai-status-text');
+            const playerScore = document.getElementById('player-score');
+            const aiScore = document.getElementById('ai-score');
+
+            playerStatus.className = 'status-dot ' + (data.player_running ? 'running' : 'stopped');
+            playerText.textContent = data.player_running ? 'Draait' : 'Gestopt';
+            aiStatus.className = 'status-dot ' + (data.ai_running ? 'running' : 'stopped');
+            aiText.textContent = data.ai_running ? 'Draait' : 'Gestopt';
+            playerScore.textContent = data.scores.player;
+            aiScore.textContent = data.scores.ai;
+        });
+
+        function addOutput(element, text) {
+            element.innerHTML += `<div>${text}</div>`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function startContainer(target) {
+            socket.emit('control', { action: 'start', target: target });
+        }
+
+        function stopContainer(target) {
+            socket.emit('control', { action: 'stop', target: target });
+        }
+
+        function rebuildContainer(target) {
+            socket.emit('control', { action: 'rebuild', target: target });
+        }
+
+        function startGame() {
+            socket.emit('control', { action: 'start_game' });
+        }
+
+        function stopGame() {
+            socket.emit('control', { action: 'stop_game' });
+        }
+
+        function submitFlag() {
+            const flag = document.getElementById('flag-input').value.trim();
+            const target = document.getElementById('target-select').value;
+            if (flag) {
+                socket.emit('submit_flag', { flag: flag, target: target });
+                document.getElementById('flag-input').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
