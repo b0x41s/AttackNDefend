@@ -1,3 +1,24 @@
+```mermaid
+---
+title: Systemic Approach to Cause and Effect Diagrams
+---
+mindmap
+  root((Problem))
+    Category A
+      Cause A
+        Cause C
+    Category B
+      Cause B
+        Cause D
+        Cause E
+    Category C
+      Usual Cause A
+      Usual Cause B
+    Category D
+      Usual Cause C
+      Usual Cause D
+```
+
 # Cyber Attack & Defend 🚨💾
 
 ![Cyber Attack & Defend Banner](https://img.shields.io/badge/Cyber%20Attack%20&%20Defend-Hack%20or%20Be%20Hacked-red?style=for-the-badge&logo=shield)
