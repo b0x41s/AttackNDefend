@@ -29,23 +29,11 @@ Welkom bij **Cyber Attack & Defend**, een interactief cybersecurity-spel waar ji
    git clone https://github.com/jouwgebruikersnaam/cyber-attack-defend.git
    cd cyber-attack-defend
 Bouw de Docker-images:
-bash
 
-Collapse
-
-Wrap
-
-Copy
 docker build -t cyber-game-target ./target
 docker build -t cyber-game-manager ./manager
 Start de game manager:
-bash
 
-Collapse
-
-Wrap
-
-Copy
 ./start.sh
 Open de interface:
 Bezoek http://localhost:5000 in je browser.
@@ -53,13 +41,6 @@ Verbind via SSH: ssh root@localhost -p 2222 (speler) of -p 2223 (AI).
 🎨 Visualisatie
 Hier is een overzicht van hoe het spel werkt:
 
-mermaid
-
-Collapse
-
-Wrap
-
-Copy
 graph TD
     A[Speler Container<br>Poort: 5001<br>SSH: 2222] -->|Hackt| B[AI Container<br>Poort: 5002<br>SSH: 2223]
     B -->|Hackt| A
@@ -87,13 +68,6 @@ Start het spel via de webinterface.
 Val aan: Gebruik de website (bijv. http://localhost:5002) of SSH om de AI-flag te stelen.
 Verd```markdown Verdedig: Wijzig je broncode via de editor en herbouw je container.
 Dien flags in: Voer gestolen flags in om punten te scoren.
-text
-
-Collapse
-
-Wrap
-
-Copy
 
 ---
 
@@ -109,15 +83,7 @@ Wil je meebouwen? Fork deze repo en stuur een pull request! Issues en suggesties
 📜 Licentie
 Dit project is gelicentieerd onder de .
 
-Gemaakt door: [Jouw Naam] | Datum: 26 maart 2025
-
-text
-
-Collapse
-
-Wrap
-
-Copy
+Gemaakt door: B0x41S | Datum: 26 maart 2025
 
 ---
 
