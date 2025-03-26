@@ -28,14 +28,15 @@ Welkom bij **Cyber Attack & Defend**, een interactief cybersecurity-spel waar ji
    ```bash
    git clone https://github.com/jouwgebruikersnaam/cyber-attack-defend.git
    cd cyber-attack-defend
+   ```
    
 Bouw de Docker-images:
-`
+```
 docker build -t cyber-game-target ./target
 docker build -t cyber-game-manager ./manager
-`
-Start de game manager:
+```
 
+Start de game manager:
 ./start.sh
 Open de interface:
 Bezoek http://localhost:5000 in je browser.
