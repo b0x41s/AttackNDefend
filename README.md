@@ -44,7 +44,10 @@ Verbind via SSH: ssh root@localhost -p 2222 (speler) of -p 2223 (AI).
 🎨 Visualisatie 
 Hier is een overzicht van hoe het spel werkt:
 
-```graph TD
+```mermaid
+---
+title: Simple (Flowchart)
+---
     A[Speler Container<br>Poort: 5001<br>SSH: 2222] -->|Hackt| B[AI Container<br>Poort: 5002<br>SSH: 2223]
     B -->|Hackt| A
     C[Game Manager<br>Poort: 5000] -->|Beheert| A
