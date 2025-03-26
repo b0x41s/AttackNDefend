@@ -2,21 +2,14 @@
 ---
 title: Systemic Approach to Cause and Effect Diagrams
 ---
-mindmap
-  root((Problem))
-    Category A
-      Cause A
-        Cause C
-    Category B
-      Cause B
-        Cause D
-        Cause E
-    Category C
-      Usual Cause A
-      Usual Cause B
-    Category D
-      Usual Cause C
-      Usual Cause D
+graph TD
+    A[Speler Container<br>Poort: 5001<br>SSH: 2222] -->|Hackt| B[AI Container<br>Poort: 5002<br>SSH: 2223]
+    B -->|Hackt| A
+    C[Game Manager<br>Poort: 5000] -->|Beheert| A
+    C -->|Beheert| B
+    A -->|Flags| D[Score: Speler]
+    B -->|Flags| E[Score: AI]
+    C -->|Real-time Updates| F[Webinterface]
 ```
 
 # Cyber Attack & Defend 🚨💾
@@ -66,22 +59,6 @@ Verbind via SSH: ssh root@localhost -p 2222 (speler) of -p 2223 (AI).
 
 Hier is een overzicht van hoe het spel werkt:
 
-mermaid
-
-Collapse
-
-Wrap
-
-Copy
-graph TD
-    A[Speler Container<br>Poort: 5001<br>SSH: 2222] -->|Hackt| B[AI Container<br>Poort: 5002<br>SSH: 2223]
-    B -->|Hackt| A
-    C[Game Manager<br>Poort: 5000] -->|Beheert| A
-    C -->|Beheert| B
-    A -->|Flags| D[Score: Speler]
-    B -->|Flags| E[Score: AI]
-    C -->|Real-time Updates| F[Webinterface]
-✨ Kenmerken
 
 
 ✨ Kenmerken
