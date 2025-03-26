@@ -36,15 +36,15 @@ docker build -t cyber-game-target ./target
 docker build -t cyber-game-manager ./manager
 ```
 
-Start de game manager:
-./start.sh
-Open de interface:
-Bezoek http://localhost:5000 in je browser.
-Verbind via SSH: ssh root@localhost -p 2222 (speler) of -p 2223 (AI).
-🎨 Visualisatie
+Start de game manager: 
+./start.sh 
+Open de interface: 
+Bezoek http://localhost:5000 in je browser. 
+Verbind via SSH: ssh root@localhost -p 2222 (speler) of -p 2223 (AI). 
+🎨 Visualisatie 
 Hier is een overzicht van hoe het spel werkt:
 
-graph TD
+```graph TD
     A[Speler Container<br>Poort: 5001<br>SSH: 2222] -->|Hackt| B[AI Container<br>Poort: 5002<br>SSH: 2223]
     B -->|Hackt| A
     C[Game Manager<br>Poort: 5000] -->|Beheert| A
@@ -52,6 +52,8 @@ graph TD
     A -->|Flags| D[Score: Speler]
     B -->|Flags| E[Score: AI]
     C -->|Real-time Updates| F[Webinterface]
+```
+
 ✨ Kenmerken
 Real-time gameplay: Scores en logs worden live bijgewerkt via SocketIO.
 Code-editor: Pas je applicatie aan en herbouw je container om te verdedigen.
